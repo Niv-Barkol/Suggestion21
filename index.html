@@ -2,42 +2,68 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Suggestion box</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Suggestion box 21</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Rubik:wght@400;500&family=Caveat:wght@500;700&family=Gveret+Levin&display=swap" rel="stylesheet">
 <style>
   :root {
-    --desk: #cfdbe0;
-    --ink: #26343c;
-    --paper: #fff6b8;
-    --rule: #a6c8da;
-    --margin: #e69a9a;
-    --pen: #2f5d7c;
-    --hand: "Caveat", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
-    --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --p1: 0; --p2: 0; --r1: 0; --r2: 0; --cue: 1;
+    --black: #0e0d0d;
+    --crate-1: #2f2c2b;
+    --crate-2: #1d1b1b;
+    --red: #c8141b;
+    --red-hot: #ff3036;
+    --gold: #e0ac22;
+    --bone: #e8dec6;
+    --ink: #1d1a16;
+    --rule: rgba(95, 75, 45, .32);
+    --head: "Rajdhani", "Rubik", "Arial Narrow", "Segoe UI", sans-serif;
+    --type: "Share Tech Mono", "Rubik", "Courier New", Courier, monospace;
+    --cyan: #3fe6ff;
+    --hand: "Caveat", "Gveret Levin", "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
   body {
     min-height: 100svh;
-    background: var(--desk);
-    color: var(--ink);
+    color: var(--bone);
+    background:
+      radial-gradient(ellipse 80% 45% at 50% 100%, rgba(200, 20, 27, .42), transparent 70%),
+      linear-gradient(rgba(255,48,54,.10) 1px, transparent 1px) 0 0 / 100% 42px,
+      linear-gradient(90deg, rgba(255,48,54,.10) 1px, transparent 1px) 0 0 / 42px 100%,
+      repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 4px),
+      var(--black);
+    position: relative; overflow-x: hidden;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 28px 16px;
-    font-family: var(--sans);
+    align-items: flex-start;
+    padding: calc(clamp(28px, 7svh, 80px) + env(safe-area-inset-top, 0px)) 16px calc(90px + env(safe-area-inset-bottom, 0px));
+    font-family: var(--head);
   }
+  body::before { /* oversized outline numeral in the background */
+    content: "21"; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -52%);
+    font-family: var(--head); font-weight: 700; font-size: min(78vw, 70vh);
+    line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(255,48,54,.09);
+    pointer-events: none; z-index: 0;
+  }
+  .stage { position: relative; z-index: 1; }
+  .hud { /* corner readouts */
+    position: fixed; font-family: var(--type); font-size: 13px; color: rgba(255,48,54,.7);
+    pointer-events: none; z-index: 0;
+  }
+  .hud.tl { top: calc(10px + env(safe-area-inset-top, 0px)); left: 14px; }
+  .hud.br { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); right: 14px; }
   .sr-only {
     position: absolute; width: 1px; height: 1px; overflow: hidden;
     clip: rect(0 0 0 0); white-space: nowrap;
   }
+  .emblem { display: block; color: currentColor; }
 
   .stage { width: min(420px, 100%); }
 
-  /* ---------- Note ---------- */
+  /* ---------- Note (intel dossier) ---------- */
   /* The drop zone's bottom edge is the line of the slot: anything lower is clipped. */
   .dropzone {
     position: relative;
@@ -47,114 +73,350 @@
   }
   .note {
     position: relative;
-    background: var(--paper);
-    padding: 24px 20px 16px 52px;
+    background:
+      radial-gradient(ellipse at 85% 10%, rgba(150,110,50,.18), transparent 45%),
+      radial-gradient(ellipse at 10% 90%, rgba(120,90,40,.16), transparent 50%),
+      var(--bone);
+    color: var(--ink);
+    padding: 20px 20px 16px 52px;
     transform: rotate(-1.2deg);
-    box-shadow: 0 1px 1px rgba(0,0,0,.08), 0 10px 22px -8px rgba(40,50,60,.35);
+    box-shadow: 0 1px 1px rgba(0,0,0,.4), 0 14px 26px -8px rgba(0,0,0,.8), 0 0 28px -6px rgba(200,20,27,.35);
     border-radius: 2px;
   }
   .note::before { /* margin line */
-    content: ""; position: absolute; top: 0; bottom: 0; left: 38px; width: 2px;
-    background: var(--margin); opacity: .8;
+    content: ""; position: absolute; top: 58px; bottom: 0; left: 38px; width: 2px;
+    background: var(--red); opacity: .75;
   }
-  .note::after { /* tape */
-    content: ""; position: absolute; top: -13px; left: 50%; width: 92px; height: 26px;
-    margin-left: -46px; transform: rotate(2.5deg);
-    background: rgba(255,255,255,.55);
-    box-shadow: 0 1px 2px rgba(0,0,0,.12);
+  .note::after { /* hazard tape */
+    content: ""; position: absolute; top: -12px; left: 50%; width: 104px; height: 22px;
+    margin-left: -52px; transform: rotate(2.5deg);
+    background: repeating-linear-gradient(-45deg, #141212 0 8px, var(--gold) 8px 16px);
+    box-shadow: 0 1px 3px rgba(0,0,0,.5);
+    opacity: .92;
   }
+  .note-head {
+    display: flex; align-items: center; gap: 10px;
+    margin: 0 0 8px -32px; padding-bottom: 8px;
+    border-bottom: 2px solid var(--red);
+    color: var(--red);
+  }
+  .note-head .emblem { width: 30px; height: 30px; flex: none; }
+  .note-head .num {
+    font-weight: 700; font-size: 34px; line-height: 1; color: var(--ink);
+  }
+  .note-head .tag {
+    margin-left: auto; font-family: var(--type); font-size: 13px; line-height: 1.2;
+    text-align: right; color: rgba(29,26,22,.65);
+  }
+  .corner { position: absolute; width: 14px; height: 14px; border: 0 solid var(--red); pointer-events: none; }
+  .corner.tl { top: 5px; left: 5px; border-width: 2px 0 0 2px; }
+  .corner.tr { top: 5px; right: 5px; border-width: 2px 2px 0 0; }
+  .corner.bl { bottom: 5px; left: 5px; border-width: 0 0 2px 2px; }
+  .corner.br { bottom: 5px; right: 5px; border-width: 0 2px 2px 0; }
   textarea {
     display: block; width: 100%; height: 216px; /* 6 lines */
     margin: 0; padding: 0; border: 0; outline: 0; resize: none;
     background-color: transparent;
     background-image: repeating-linear-gradient(transparent 0 35px, var(--rule) 35px 36px);
     background-attachment: local;
-    font-family: var(--hand); font-weight: 500; font-size: 26px; line-height: 36px;
+    line-height: 36px;
     color: var(--ink);
   }
-  textarea::placeholder { color: rgba(38,52,60,.45); }
+  textarea::placeholder { color: rgba(29,26,22,.45); }
   .note-foot {
     display: flex; align-items: center; justify-content: space-between;
     margin-top: 10px; gap: 12px;
   }
-  .count { font-size: 12px; color: rgba(38,52,60,.6); font-variant-numeric: tabular-nums; }
+  .count { font-size: 14px; font-weight: 600; color: rgba(29,26,22,.6); font-variant-numeric: tabular-nums; }
   button {
-    font-family: var(--hand); font-weight: 700; font-size: 26px; line-height: 1;
-    padding: 8px 26px 9px; border: 0; border-radius: 6px; cursor: pointer;
-    background: var(--pen); color: #fff;
-    box-shadow: 0 3px 0 #1d4157;
+    font-family: var(--head); font-weight: 700; font-size: 22px; line-height: 1;
+    letter-spacing: .14em; text-transform: uppercase;
+    padding: 10px 22px 10px 26px; border: 2px solid #000; border-radius: 3px; cursor: pointer;
+    background: linear-gradient(var(--red-hot), var(--red) 55%, #9c0e14);
+    color: #fff3e0;
+    box-shadow: 0 3px 0 #000, 0 0 14px rgba(255,48,54,.35);
     transition: transform .08s, box-shadow .08s, filter .15s;
   }
-  button:hover { filter: brightness(1.1); }
-  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #1d4157; }
-  button:focus-visible, textarea:focus-visible { outline: 3px solid #1d4157; outline-offset: 3px; }
-  button:disabled { cursor: default; filter: grayscale(.4) brightness(1.1); transform: none; box-shadow: 0 3px 0 #1d4157; }
+  button:hover { filter: brightness(1.12); box-shadow: 0 3px 0 #000, 0 0 20px rgba(255,48,54,.6); }
+  button:active { transform: translateY(2px); box-shadow: 0 1px 0 #000, 0 0 12px rgba(255,48,54,.4); }
+  button:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  button:disabled { cursor: default; filter: grayscale(.6) brightness(.8); transform: none; box-shadow: 0 3px 0 #000; }
+
+  /* ---------- Handwriting: Caveat for English, Gveret Levin fills in Hebrew ---------- */
+  textarea { font-family: var(--hand); font-size: 26px; text-align: start; }
+  textarea[dir="rtl"] { font-size: 24px; }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
-  /* ---------- Box ---------- */
+  /* ---------- Box (black cardboard crate) ---------- */
   .box { position: relative; z-index: 1; margin-top: -28px; }
   .top {
     position: relative; height: 56px;
-    background: linear-gradient(#dcb07c, #cf9f68);
+    background: linear-gradient(#433f3e, #2d2a29);
     clip-path: polygon(7% 0, 93% 0, 100% 100%, 0 100%);
   }
   .slot {
     position: absolute; left: 20%; right: 20%; top: 50%; height: 14px;
     transform: translateY(-50%);
-    background: #2b1d11; border-radius: 8px;
-    box-shadow: inset 0 3px 5px rgba(0,0,0,.65);
+    background: linear-gradient(#050202, #2a0507);
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(255,48,54,.8);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.9), 0 0 10px rgba(255,48,54,.5);
+    animation: slotglow 3.2s ease-in-out infinite;
+  }
+  @keyframes slotglow {
+    0%, 100% { box-shadow: inset 0 3px 5px rgba(0,0,0,.9), 0 0 8px rgba(255,48,54,.35); }
+    50%      { box-shadow: inset 0 3px 5px rgba(0,0,0,.9), 0 0 16px rgba(255,48,54,.7); }
   }
   .front {
-    position: relative; height: 190px;
+    position: relative; height: 292px;
     background:
-      repeating-linear-gradient(90deg, rgba(120,76,36,.07) 0 3px, transparent 3px 9px),
-      linear-gradient(#c68f58, #b98450);
-    border-top: 2px solid rgba(110,70,32,.45);
+      repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0 3px, transparent 3px 9px),
+      linear-gradient(var(--crate-1), var(--crate-2));
+    border-top: 2px solid #000;
     border-radius: 0 0 6px 6px;
     box-shadow:
-      inset 14px 0 18px -14px rgba(70,40,15,.45),
-      inset -14px 0 18px -14px rgba(70,40,15,.45),
-      0 22px 26px -14px rgba(30,40,50,.5);
-    display: grid; place-items: center;
+      inset 14px 0 18px -14px rgba(0,0,0,.8),
+      inset -14px 0 18px -14px rgba(0,0,0,.8),
+      0 26px 34px -14px rgba(200,20,27,.45),
+      0 0 0 1px rgba(255,255,255,.04);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; padding: 14px 0 64px;
   }
+  .front::before { /* circuit traces */
+    content: ""; position: absolute; inset: 22px 14px 70px 14px; pointer-events: none;
+    background:
+      linear-gradient(var(--red), var(--red)) 0 20% / 22% 2px no-repeat,
+      linear-gradient(var(--red), var(--red)) 22% 20% / 2px 30% no-repeat,
+      linear-gradient(var(--red), var(--red)) 100% 70% / 20% 2px no-repeat,
+      linear-gradient(var(--red), var(--red)) 80% 40% / 2px 30% no-repeat,
+      radial-gradient(circle, var(--red-hot) 3px, transparent 4px) 22% 50% / 10px 10px no-repeat,
+      radial-gradient(circle, var(--red-hot) 3px, transparent 4px) 80% 40% / 10px 10px no-repeat;
+    opacity: .4;
+  }
+  .id-row { display: flex; align-items: center; gap: 14px; position: relative; }
+  .big-num {
+    font-weight: 700; font-size: 74px; line-height: 1; color: transparent;
+    -webkit-text-stroke: 2px var(--red-hot); text-shadow: 0 0 14px rgba(255,48,54,.6);
+  }
+  .strip { /* hazard tape across the seam */
+    position: absolute; left: 0; right: 0; top: -2px; height: 13px;
+    background: repeating-linear-gradient(-45deg, #141212 0 9px, var(--gold) 9px 18px);
+    opacity: .9;
+  }
+  .stencil { width: 78px; height: 78px; color: var(--red); filter: drop-shadow(0 0 8px rgba(255,48,54,.5)); }
   .label {
-    background: #f6efe0; color: var(--ink);
-    padding: 8px 26px 10px; transform: rotate(-1deg);
-    font-family: var(--hand); font-weight: 700; font-size: 38px; line-height: 1;
-    border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,.25);
+    background: #0b0a0a; color: var(--bone);
+    border: 2px solid var(--red);
+    padding: 7px 24px 8px; transform: rotate(-1deg);
+    font-weight: 700; font-size: 30px; line-height: 1; letter-spacing: .08em;
+    text-transform: uppercase;
+    border-radius: 2px; box-shadow: 0 2px 6px rgba(0,0,0,.6);
     text-align: center;
   }
-  .strip { /* packing tape across the seam */
-    position: absolute; left: 0; right: 0; top: -2px; height: 14px;
-    background: rgba(238,222,176,.55);
+  .label { animation: glitch 7s steps(1) infinite; }
+  @keyframes glitch {
+    0%, 92%, 100% { text-shadow: none; transform: rotate(-1deg); }
+    93% { text-shadow: 3px 0 var(--red-hot), -3px 0 var(--cyan); transform: rotate(-1deg) translateX(2px); }
+    95% { text-shadow: -3px 0 var(--red-hot), 3px 0 var(--cyan); transform: rotate(-1deg) translateX(-2px); }
+    97% { text-shadow: 2px 0 var(--cyan); transform: rotate(-1deg); }
+  }
+  .motto {
+    margin: 0; font-family: var(--type); font-size: 15px; letter-spacing: .12em;
+    color: var(--gold); position: relative;
   }
 
   .status {
-    min-height: 2em; margin: 22px 0 0; text-align: center;
-    font-family: var(--hand); font-weight: 700; font-size: 28px; line-height: 1.2;
+    min-height: 2em; margin: 0 0 22px; text-align: center;
+    font-family: var(--type); font-size: 18px; line-height: 1.3; letter-spacing: .04em; color: var(--gold);
+    text-shadow: 0 0 10px rgba(224,172,34,.45);
   }
-  .status.error { color: #8d2f2f; }
+  .status.error { color: #ff6a6e; }
+
+
+  /* ---------- Scroll sequence: hatch, trash can, upgraded box ---------- */
+  .hatch {
+    position: absolute; left: 50%; bottom: 0; width: 152px; height: 58px;
+    transform: translateX(-50%); z-index: 2;
+  }
+  .hatch .cavity {
+    position: absolute; inset: 0; border: 2px solid #000;
+    background: linear-gradient(#050202, #2a0507 65%, rgba(255,48,54,.7));
+    box-shadow: inset 0 0 12px #000, 0 0 calc(var(--p) * 28px) rgba(255,48,54,.85);
+  }
+  .door {
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    background: repeating-linear-gradient(-45deg, #141212 0 7px, var(--gold) 7px 14px);
+    box-shadow: inset 0 0 0 2px #000;
+    will-change: transform; filter: drop-shadow(0 4px 5px rgba(0,0,0,.6));
+  }
+  /* Doors hinge at the top outer corners and swing down, hanging beside the opening */
+  .door.l { left: 0;  transform-origin: 0 0;     transform: rotate(calc(var(--p) * 92deg)); }
+  .door.r { right: 0; transform-origin: 100% 0;  transform: rotate(calc(var(--p) * -92deg)); }
+  .h1, .c1 { --p: var(--p1); }
+  .h2, .c2 { --p: var(--p2); }
+
+  .chute { position: relative; height: 150px; }
+  .beam {
+    position: absolute; top: 0; left: 50%; width: 124px; height: 100%; margin-left: -62px;
+    background: linear-gradient(rgba(255,48,54,.6), rgba(255,48,54,0));
+    clip-path: polygon(6% 0, 94% 0, 100% 100%, 0 100%);
+    transform-origin: top; transform: scaleY(var(--p)); opacity: var(--p);
+  }
+  .drop {
+    position: absolute; top: 0; left: 50%; width: 13px; height: 17px; margin-left: -6px;
+    background: var(--bone); opacity: 0; border-radius: 1px;
+    animation: fall 1.9s linear infinite;
+  }
+  .drop.d2 { margin-left: -26px; animation-delay: .6s; }
+  .drop.d3 { margin-left: 14px;  animation-delay: 1.2s; }
+  @keyframes fall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+    12%  { opacity: calc(var(--p) * .95); }
+    85%  { opacity: calc(var(--p) * .95); }
+    100% { transform: translateY(138px) rotate(210deg); opacity: 0; }
+  }
+
+  .can {
+    position: relative; width: 214px; height: 236px; margin: 0 auto;
+    opacity: var(--r1); transform: translateY(calc((1 - var(--r1)) * 46px));
+    filter: drop-shadow(0 18px 20px rgba(200,20,27,.4));
+  }
+  .can-body {
+    position: absolute; top: 12px; left: 50%; width: 196px; height: 224px; margin-left: -98px;
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.4) 0 4px, transparent 4px 16px),
+      linear-gradient(90deg, #1b1919, #433f3e 38%, #2c2929 62%, #171515);
+    clip-path: polygon(0 0, 100% 0, 86% 100%, 14% 100%);
+    display: grid; place-items: center; padding-bottom: 36px;
+  }
+  .can-body::before { /* hazard band */
+    content: ""; position: absolute; top: 26px; left: 0; right: 0; height: 12px;
+    background: repeating-linear-gradient(-45deg, #141212 0 8px, var(--gold) 8px 16px); opacity: .9;
+  }
+  .can-body .big-num { font-size: 66px; margin-top: 18px; }
+  .rim {
+    position: absolute; top: 0; left: 0; right: 0; height: 26px; border-radius: 13px; z-index: 2;
+    background: linear-gradient(#5a5554, #2a2727);
+    box-shadow: 0 2px 0 #000, inset 0 1px 0 rgba(255,255,255,.18);
+  }
+  .rim::after { /* open mouth */
+    content: ""; position: absolute; top: 5px; left: 9px; right: 9px; height: 15px; border-radius: 8px;
+    background: linear-gradient(#030101, #2a0507);
+    box-shadow: inset 0 3px 5px #000, 0 0 calc(var(--p1) * 16px) rgba(255,48,54,.8);
+  }
+  .can .hatch { width: 102px; height: 44px; z-index: 3; }
+
+  .tier2wrap {
+    position: relative; opacity: var(--r2);
+    transform: translateY(calc((1 - var(--r2)) * 52px));
+  }
+  .tier2wrap::before { /* halo */
+    content: ""; position: absolute; inset: -50px -34px; z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(224,172,34,.4), transparent 66%);
+  }
+  .tier2 { margin-top: 0; }
+  .tier2 .top { background: linear-gradient(#f6d663, #c9981b); }
+  .tier2 .slot {
+    background: linear-gradient(#050400, #2b2000); border-bottom-color: rgba(255,226,120,.95);
+    animation: none; box-shadow: inset 0 3px 5px rgba(0,0,0,.9), 0 0 20px rgba(255,208,80,.9);
+  }
+  .tier2 .front {
+    height: 336px; padding: 22px 0 22px; gap: 14px;
+    background:
+      repeating-linear-gradient(90deg, rgba(60,40,0,.22) 0 3px, transparent 3px 9px),
+      linear-gradient(#ebc23c, #a47510);
+    border-top-color: #3a2800;
+    box-shadow:
+      inset 14px 0 18px -14px rgba(60,40,0,.8), inset -14px 0 18px -14px rgba(60,40,0,.8),
+      0 32px 44px -14px rgba(224,172,34,.6);
+  }
+  .tier2 .front::before { inset: 30px 14px 14px 14px; opacity: .22; }
+  .tier2 .stencil { color: #1a1200; filter: drop-shadow(0 0 6px rgba(255,238,170,.7)); }
+  .tier2 .big-num { -webkit-text-stroke: 2px #1a1200; text-shadow: 0 0 12px rgba(255,238,170,.8); }
+  .tier2 .label { background: #120d00; border-color: #fff1b0; color: #ffe59a; }
+  .tier2 .motto { color: #1a1200; font-size: 14px; }
+  .leds { display: flex; gap: 4px; width: 82%; position: relative; margin-top: 8px; }
+  .leds i {
+    flex: 1; height: 9px; background: #4a3600; border: 1px solid #1a1200; border-radius: 1px;
+    transition: background .15s, box-shadow .15s;
+  }
+  .leds i.on { background: #fff3b0; box-shadow: 0 0 8px #fff3b0; }
+
+  .cue {
+    left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+    text-align: center; opacity: var(--cue); transition: opacity .3s; color: var(--gold);
+  }
+  .cue::after {
+    content: ""; display: block; width: 10px; height: 10px; margin: 4px auto 0;
+    border: solid var(--gold); border-width: 0 2px 2px 0; transform: rotate(45deg);
+    animation: nudge 1.6s ease-in-out infinite;
+  }
+  @keyframes nudge { 0%,100% { translate: 0 0; } 50% { translate: 0 5px; } }
 
   @media (max-width: 380px) {
     .note { padding-left: 46px; }
     .note::before { left: 34px; }
+    .note-head { margin-left: -28px; }
+    .note-head span { font-size: 19px; }
     textarea { font-size: 24px; }
+    textarea[dir="rtl"] { font-size: 22px; }
+    .label { font-size: 26px; }
+    .can { transform-origin: top; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .slot, .label, .cue::after { animation: none; }
+    .drop { display: none; }
   }
 </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="scorpion" viewBox="0 0 100 100">
+        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M43 52 C30 50 22 42 24 30" stroke-width="4"/>
+          <path d="M57 52 C70 50 78 42 76 30" stroke-width="4"/>
+          <path d="M24 30 C16 28 14 18 21 13" stroke-width="3.5"/>
+          <path d="M24 30 C31 28 33 19 28 13" stroke-width="3.5"/>
+          <path d="M76 30 C84 28 86 18 79 13" stroke-width="3.5"/>
+          <path d="M76 30 C69 28 67 19 72 13" stroke-width="3.5"/>
+          <path d="M41 62 L26 65 M41 69 L28 79 M43 75 L35 89 M59 62 L74 65 M59 69 L72 79 M57 75 L65 89" stroke-width="2.6"/>
+          <path d="M50 78 C50 96 86 94 86 66 C86 50 76 40 68 44" stroke-width="5"/>
+        </g>
+        <g fill="currentColor">
+          <ellipse cx="50" cy="62" rx="10" ry="15"/>
+          <circle cx="50" cy="45" r="7"/>
+          <path d="M66.6 41.1 L60 48 L69.4 46.9 Z"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <div class="hud tl" aria-hidden="true">// 21.21.21</div>
+  <div class="hud br" aria-hidden="true">node 21</div>
+
+  <div class="hud cue" aria-hidden="true">scroll</div>
+
   <main class="stage">
-    <h1 class="sr-only">Suggestion box</h1>
+    <h1 class="sr-only">Suggestion box 21</h1>
+
+    <p class="status" id="status" role="status" aria-live="polite"></p>
 
     <form id="form" autocomplete="off">
       <div class="dropzone" id="dropzone">
         <div class="note" id="note">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <div class="note-head" aria-hidden="true">
+            <svg class="emblem"><use href="#scorpion"/></svg>
+            <span class="num">21</span>
+            <span class="tag">sector 21<br>id 0021</span>
+          </div>
           <label class="sr-only" for="text">Your suggestion</label>
-          <textarea id="text" name="text" maxlength="1000" placeholder="Write your suggestion here…" required></textarea>
+          <textarea id="text" name="text" dir="ltr" maxlength="1000" placeholder="Write your suggestion here…" required></textarea>
           <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="note-foot">
             <span class="count" id="count" aria-hidden="true">0 / 1000</span>
-            <button type="submit" id="send">Send</button>
+            <button type="submit" id="send">Transmit</button>
           </div>
         </div>
       </div>
@@ -164,11 +426,41 @@
       <div class="top"><div class="slot"></div></div>
       <div class="front">
         <div class="strip"></div>
+        <div class="id-row">
+          <svg class="emblem stencil"><use href="#scorpion"/></svg>
+          <span class="big-num">21</span>
+        </div>
         <div class="label">Suggestion box</div>
+        <p class="motto">slot 21 // online</p>
+        <div class="hatch h1" id="hatch1"><div class="cavity"></div><div class="door l"></div><div class="door r"></div></div>
       </div>
     </div>
 
-    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div class="chute c1" aria-hidden="true"><div class="beam"></div><i class="drop d1"></i><i class="drop d2"></i><i class="drop d3"></i></div>
+
+    <div class="can" id="can" aria-hidden="true">
+      <div class="can-body"><span class="big-num">21</span></div>
+      <div class="rim"></div>
+      <div class="hatch h2" id="hatch2"><div class="cavity"></div><div class="door l"></div><div class="door r"></div></div>
+    </div>
+
+    <div class="chute c2" aria-hidden="true"><div class="beam"></div><i class="drop d1"></i><i class="drop d2"></i><i class="drop d3"></i></div>
+
+    <div class="tier2wrap" id="better" aria-hidden="true">
+      <div class="box tier2">
+        <div class="top"><div class="slot"></div></div>
+        <div class="front">
+          <div class="strip"></div>
+          <div class="leds" id="leds"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="id-row">
+            <svg class="emblem stencil"><use href="#scorpion"/></svg>
+            <span class="big-num">21</span>
+          </div>
+          <div class="label">Suggestion box</div>
+          <p class="motto">mk 21 // capacity x21</p>
+        </div>
+      </div>
+    </div>
   </main>
 
 <script>
@@ -186,7 +478,23 @@
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   const REST = "rotate(-1.2deg)";
 
-  ta.addEventListener("input", () => { count.textContent = ta.value.length + " / 1000"; });
+  // Direction follows the first strongly-directional letter (Hebrew/Arabic -> RTL, Latin -> LTR).
+  const RTL_CHAR = /[\u0590-\u08FF\uFB1D-\uFDFF\uFE70-\uFEFF]/;
+  const LTR_CHAR = /[A-Za-z\u00C0-\u024F\u0370-\u03FF\u0400-\u04FF]/;
+  function applyDir(d) {
+    ta.dir = d;
+  }
+  function syncDir() {
+    if (!ta.value) return applyDir("ltr");
+    for (const ch of ta.value) {
+      if (RTL_CHAR.test(ch)) return applyDir("rtl");
+      if (LTR_CHAR.test(ch)) return applyDir("ltr");
+    }
+  }
+  ta.addEventListener("input", () => {
+    count.textContent = ta.value.length + " / 1000";
+    syncDir();
+  });
 
   function setStatus(msg, isError) {
     statusEl.textContent = msg || "";
@@ -199,6 +507,12 @@
     }
     const dist = note.offsetHeight + 48;
     setTimeout(() => {
+      document.querySelector(".slot").animate(
+        [{ boxShadow: "inset 0 3px 5px rgba(0,0,0,.9), 0 0 10px rgba(255,48,54,.5)" },
+         { boxShadow: "inset 0 3px 5px rgba(0,0,0,.9), 0 0 34px rgba(255,48,54,1)" },
+         { boxShadow: "inset 0 3px 5px rgba(0,0,0,.9), 0 0 10px rgba(255,48,54,.5)" }],
+        { duration: 700, easing: "ease-out" }
+      );
       box.animate(
         [{ transform: "translateY(0)" },
          { transform: "translateY(6px) scale(1.012, .985)" },
@@ -260,6 +574,7 @@
       f.method = "POST";
       f.action = FORM_URL;
       f.target = name;
+      f.acceptCharset = "UTF-8";
       f.style.display = "none";
       const input = document.createElement("textarea");
       input.name = ENTRY_ID;
@@ -311,11 +626,12 @@
 
     if (ok) {
       ta.value = "";
+      applyDir("ltr");
       count.textContent = "0 / 1000";
-      setStatus("Thanks! Your suggestion is in the box.");
+      setStatus("Received. Log 21 updated.");
       await wait(reduceMotion ? 200 : 900);
     } else {
-      setStatus("Couldn't send. Check your connection and try again.", true);
+      setStatus("Transmission failed. Check your connection and try again.", true);
     }
 
     await bringNoteBack();
@@ -324,6 +640,38 @@
     busy = false;
     if (!ok) ta.focus();
   });
+
+  // ---- Scroll sequence: hatches open, trash can and upgraded box appear ----
+  const root = document.documentElement;
+  const leds = Array.from(document.querySelectorAll("#leds i"));
+  const clamp01 = (n) => Math.min(1, Math.max(0, n));
+  // 0 -> 1 as the element's centre travels from `from` to `to` (fractions of viewport height)
+  function prog(el, from, to) {
+    const r = el.getBoundingClientRect();
+    const y = r.top + r.height / 2;
+    const vh = window.innerHeight;
+    return clamp01((vh * from - y) / (vh * (from - to)));
+  }
+  let queued = false;
+  function updateScroll() {
+    queued = false;
+    let p1 = prog($("hatch1"), .8, .42);
+    let p2 = prog($("hatch2"), .8, .42);
+    let r1 = prog($("can"), .98, .66);
+    let r2 = prog($("better"), .98, .62);
+    if (reduceMotion) { p1 = p1 > .3 ? 1 : 0; p2 = p2 > .3 ? 1 : 0; r1 = r1 > .2 ? 1 : 0; r2 = r2 > .2 ? 1 : 0; }
+    root.style.setProperty("--p1", p1.toFixed(3));
+    root.style.setProperty("--p2", p2.toFixed(3));
+    root.style.setProperty("--r1", r1.toFixed(3));
+    root.style.setProperty("--r2", r2.toFixed(3));
+    root.style.setProperty("--cue", window.scrollY < 40 ? 1 : 0);
+    const lit = Math.round(r2 * 21);
+    leds.forEach((el, i) => el.classList.toggle("on", i < lit));
+  }
+  function queueUpdate() { if (!queued) { queued = true; requestAnimationFrame(updateScroll); } }
+  window.addEventListener("scroll", queueUpdate, { passive: true });
+  window.addEventListener("resize", queueUpdate);
+  updateScroll();
 </script>
 </body>
 </html>
