@@ -412,10 +412,10 @@
             <span class="tag">sector 21<br>id 0021</span>
           </div>
           <label class="sr-only" for="text">Your suggestion</label>
-          <textarea id="text" name="text" dir="ltr" maxlength="1000" placeholder="Write your suggestion here…" required></textarea>
+          <textarea id="text" name="text" dir="ltr" maxlength="10000" placeholder="Write your suggestion here…" required></textarea>
           <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="note-foot">
-            <span class="count" id="count" aria-hidden="true">0 / 1000</span>
+            <span class="count" id="count" aria-hidden="true">0 / 10000</span>
             <button type="submit" id="send">Transmit</button>
           </div>
         </div>
@@ -492,7 +492,7 @@
     }
   }
   ta.addEventListener("input", () => {
-    count.textContent = ta.value.length + " / 1000";
+    count.textContent = ta.value.length + " / 10000";
     syncDir();
   });
 
@@ -627,7 +627,7 @@
     if (ok) {
       ta.value = "";
       applyDir("ltr");
-      count.textContent = "0 / 1000";
+      count.textContent = "0 / 10000";
       setStatus("Received. Log 21 updated.");
       await wait(reduceMotion ? 200 : 900);
     } else {
